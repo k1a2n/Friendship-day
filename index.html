@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friendship Day</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      height: 100vh;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      background-color: #00FF00;
+    }
+
+    .card {
+      background:black;
+      border-radius: 20px;
+      padding: 40px 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      animation: fadeIn 2s ease forwards;
+      position: relative;
+      height: 96vh;
+    }
+
+    .heart {
+      font-size: 60px;
+      color: #ff4d6d;
+      animation: beat 1s infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    .typing {
+      font-size: 1.6em;
+      color: White;
+      margin-bottom: 25px;
+      border-right: 2px solid #555;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 3s steps(30, end) forwards, blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 22px;
+      color: white;
+      background: black;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 5px #908083, 0 0 20px #908083;
+      transition: transform 0.3s ease;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    .gifts {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 25px;
+      display: none;
+    }
+
+    .gift-box {
+      font-size: 50px;
+      cursor: pointer;
+      animation: bounce 1s infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .gift-box.opened { animation: none; }
+
+    .gift-box:hover {
+      transform: scale(1.2);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .msg {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #00FF00;
+      min-height: 30px;
+    }
+
+    .inputs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .inputs-input::placeholder {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.inputs input:focus {
+  background-color: black; /* light blue on focus */
+  outline: none;
+}
+
+.inputs-input:focus::placeholder {
+   background-color: black;
+  color: #bbb; /* faded color when focused */
+}
+
+
+    .inputs input,
+    .inputs select {
+      flex: 1;
+      padding: 10px;
+      min-width: 120px;
+      border-radius: 10px;
+      border: 2px solid #aaa;
+      font-size: 15px;
+      color: white;
+      background: black;
+      
+    }
+
+    .top-left, .top-right {
+      position: absolute;
+      top: 10px;
+    }
+
+    .top-left { left: 10px; }
+    .top-right { right: 10px; }
+
+    .btn-icon {
+      background: white;
+      border: 2px solid #ff4d6d;
+      color: #ff4d6d;
+      padding: 10px 14px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .btn-icon:hover {
+      background-color: #ff4d6d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="capture">
+    <button class="btn-icon top-left" onclick="resetAll()"><i class="fas fa-rotate-left"></i></button>
+    <button class="btn-icon top-right" onclick="downloadCard()"><i class="fas fa-download"></i></button>
+
+    <div class="heart">💖</div>
+    <div class="typing">Happy Friendship Day!</div>
+
+    <div class="inputs">
+      <input type="text" id="name" placeholder="First name" />
+      <select id="month">
+        <option value="">Birth month</option>
+        <option>January</option><option>February</option><option>March</option>
+        <option>April</option><option>May</option><option>June</option>
+        <option>July</option><option>August</option><option>September</option>
+        <option>October</option><option>November</option><option>December</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="showGifts()">Tap for Surprises 🎁</button>
+
+    <div class="gifts" id="gifts">
+      <div class="gift-box" onclick="openGift(0)">🎁</div>
+      <div class="gift-box" onclick="openGift(1)">🎁</div>
+      <div class="gift-box" onclick="openGift(2)">🎁</div>
+      <div class="gift-box" onclick="openGift(3)">🎁</div>
+      <div class="gift-box" onclick="openGift(4)">🎁</div>
+    </div>
+
+    <div class="msg" id="msg"></div>
+    <div class="summary" id="summary" style="margin-top:20px;"></div>
+  </div>
+
+  <audio id="popSound" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+  <script>
+    const messagesPool = [
+  "📸 Memory Jar: Our friendship is filled with snapshots of joy!",
+  "🍫 Sweetness for your sweet soul — Chocolate for you!",
+  "💌 You’ll always be my favorite person — BFF Forever!",
+  "📖 Story of Us: Every moment is a new chapter of laughter and loyalty!",
+  "🧸 Here's a Teddy when you miss me!",
+  "🎨 A painting of all the colors we bring into each other’s lives!",
+  "😂 A funny moment emoji, just like our silly talks!",
+  "🎵 A melody that plays only for you — our friendship tune!",
+  "🍕 A slice of happiness, because you're my comfort food!",
+  "🎈 A balloon of joy to lift your spirits anytime!",
+  "📦 A mystery box full of surprises — just like our chats!",
+  "🌟 A shooting star that reminds me of your spark!",
+  "👑 You're the royalty of my heart — wear your crown proudly!",
+  "🌸 A blossom of trust that keeps our bond growing!",
+  "🎁 A box of memories that can never fade!",
+  "📷 A selfie moment — because every time with you is worth capturing!",
+  "🧁 A cupcake of sweetness, sprinkled with love!",
+  "🐻 A hug in emoji form — soft and warm like your heart!",
+  "📝 A secret letter that says: I’ll always be here!",
+  "🪄 A magic wand — because your presence makes everything better!"
+];
+
+const emojisPool = [
+  "📸", "🍫", "💌", "📖", "🧸", "🎨", "😂", "🎵", "🍕", "🎈",
+  "📦", "🌟", "👑", "🌸", "🎁", "📷", "🧁", "🐻", "📝", "🪄"
+];
+
+    let selectedGifts = [];
+    let openedMessages = [];
+    let userName = "";
+
+    function showGifts() {
+      const name = document.getElementById("name").value.trim();
+      const month = document.getElementById("month").value;
+      const msg = document.getElementById("msg");
+
+      if (!name || !month) {
+        msg.innerText = "Please enter your name and birth month!";
+        return;
+      }
+
+      userName = name;
+      openedMessages = [];
+      selectedGifts = [];
+
+      while (selectedGifts.length < 5) {
+        let rand = Math.floor(Math.random() * messagesPool.length);
+        if (!selectedGifts.includes(rand)) selectedGifts.push(rand);
+      }
+
+      document.querySelectorAll(".gift-box").forEach((box, i) => {
+        box.innerText = "🎁";
+        box.classList.remove("opened");
+      });
+
+      document.getElementById("gifts").style.display = "flex";
+      document.getElementById("msg").innerText = `Hi ${name}, tap on each gift to reveal your surprises!`;
+      document.getElementById("summary").innerHTML = "";
+    }
+
+    function openGift(index) {
+      const box = document.querySelectorAll(".gift-box")[index];
+      const msg = document.getElementById("msg");
+      if (box.classList.contains("opened")) return;
+
+      const giftIndex = selectedGifts[index];
+      const emoji = emojisPool[giftIndex];
+      const message = messagesPool[giftIndex];
+      box.innerText = emoji;
+      box.classList.add("opened");
+      openedMessages.push(message);
+      msg.innerText = message;
+      document.getElementById('popSound').play();
+
+      if (openedMessages.length === 5) {
+        setTimeout(() => {
+          document.getElementById("msg").innerHTML = ` YOUR GIFT 😊 <br/> ❤️ ${userName}, thank you for being the most wonderful friend 💖<br/>
+      These little surprises are just a tiny part of the love and joy you bring into my life every day.<br/>
+      Happy Friendship Day! 🎉`;
+        }, 3000);
+      }
+    }
+
+    function resetAll() {
+      document.getElementById("name").value = "";
+      document.getElementById("month").value = "";
+      document.getElementById("msg").innerText = "";
+      document.getElementById("gifts").style.display = "none";
+      document.getElementById("summary").innerHTML = "";
+      openedMessages = [];
+      document.querySelectorAll(".gift-box").forEach(box => {
+        box.innerText = "🎁";
+        box.classList.remove("opened");
+      });
+    }
+
+    function downloadCard() {
+      const captureEl = document.getElementById("capture");
+      const summary = document.getElementById("summary");
+
+      let listHTML = "<ol style='text-align:left;color:white;'>";
+      openedMessages.forEach(msg => {
+        listHTML += `<li style="margin-bottom:10px;">${msg}</li>`;
+      });
+      listHTML += "</ol>";
+
+      const finalMessage = `<div style="margin-top:15px;text-align:center;font-weight:bold;color:#00FF00;">
+        ❤️ ${userName}, thank you for being the most wonderful friend 💖<br/>
+      These little surprises are just a tiny part of the love and joy you bring into my life every day.<br/>
+      Happy Friendship Day! 🎉
+      </div>`;
+
+      summary.innerHTML = listHTML + finalMessage;
+      document.getElementById("msg").innerText = "";
+      document.getElementById("gifts").style.display = "none";
+
+      setTimeout(() => {
+        html2canvas(captureEl).then(canvas => {
+          const link = document.createElement("a");
+          link.download = "friendship_card.png";
+          link.href = canvas.toDataURL();
+          link.click();
+          summary.innerHTML = "";
+          document.getElementById("gifts").style.display = "flex";
+        });
+      }, 200);
+    }
+  </script>
+</body>
+</html>
